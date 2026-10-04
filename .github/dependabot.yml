@@ -23,6 +23,11 @@ updates:
     open-pull-requests-limit: 5
     commit-message:
       prefix: "chore(deps)"
+    ignore:
+      # The app pins the Nest 11 peer set; a @nestjs/* major bump alone breaks
+      # npm ci with ERESOLVE. Upgrade the peer set together by hand.
+      - dependency-name: "@nestjs/*"
+        update-types: ["version-update:semver-major"]
     groups:
       non-major:
         patterns: ["*"]
