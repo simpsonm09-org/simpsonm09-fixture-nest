@@ -5,6 +5,6 @@
 export class ItemNotFoundException extends Error {
   constructor(readonly itemId: number) {
     super(`Item ${itemId} was not found`);
-    this.name = 'ItemNotFoundException';
+    this.name = "ItemNotFoundException";
   }
 }

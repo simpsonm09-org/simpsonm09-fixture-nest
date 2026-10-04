@@ -1,7 +1,7 @@
-import { Inject, Injectable } from '@nestjs/common';
-import type { Item } from '../domain/item';
-import { ItemNotFoundException } from '../domain/item-not-found.exception';
-import { ITEM_REPOSITORY, type ItemRepository } from '../store/item.repository';
+import { Inject, Injectable } from "@nestjs/common";
+import type { Item } from "../domain/item";
+import { ItemNotFoundException } from "../domain/item-not-found.exception";
+import { ITEM_REPOSITORY, type ItemRepository } from "../store/item.repository";
 
 /**
  * Item business logic. It works in the domain `Item` and depends on the
@@ -9,7 +9,9 @@ import { ITEM_REPOSITORY, type ItemRepository } from '../store/item.repository';
  */
 @Injectable()
 export class ItemService {
-  constructor(@Inject(ITEM_REPOSITORY) private readonly repository: ItemRepository) {}
+  constructor(
+    @Inject(ITEM_REPOSITORY) private readonly repository: ItemRepository,
+  ) {}
 
   listItems(): Item[] {
     return this.repository.findAll();

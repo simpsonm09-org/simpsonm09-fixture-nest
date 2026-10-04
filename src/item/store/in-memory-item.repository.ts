@@ -1,13 +1,14 @@
-import { Injectable } from '@nestjs/common';
-import type { Item } from '../domain/item';
-import type { ItemRepository } from './item.repository';
+import { Injectable } from "@nestjs/common";
+import type { Item } from "../domain/item";
+import type { ItemRepository } from "./item.repository";
 
 /** The three items seeded on startup so the API has something to return. */
-export const DEFAULT_ITEMS: ReadonlyArray<Pick<Item, 'name' | 'description'>> = [
-  { name: 'Widget', description: 'A small widget' },
-  { name: 'Gadget', description: 'A handy gadget' },
-  { name: 'Gizmo', description: 'A clever gizmo' },
-];
+export const DEFAULT_ITEMS: ReadonlyArray<Pick<Item, "name" | "description">> =
+  [
+    { name: "Widget", description: "A small widget" },
+    { name: "Gadget", description: "A handy gadget" },
+    { name: "Gizmo", description: "A clever gizmo" },
+  ];
 
 /**
  * In-memory store adapter. It converges to the seeded state on restart, so a
@@ -46,10 +47,11 @@ export class InMemoryItemRepository implements ItemRepository {
   }
 
   /** Replaces every record with the given seeds. Used by the dev seed and tests. */
-  seed(seeds: ReadonlyArray<Pick<Item, 'name' | 'description'>>): void {
+  seed(seeds: ReadonlyArray<Pick<Item, "name" | "description">>): void {
     this.items.clear();
     this.nextId = 1;
-    for (const seed of seeds) this.save({ id: null, name: seed.name, description: seed.description });
+    for (const seed of seeds)
+      this.save({ id: null, name: seed.name, description: seed.description });
   }
 
   /** Empties the store. */

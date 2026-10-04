@@ -1,7 +1,7 @@
-import type { Item } from '../domain/item';
+import type { Item } from "../domain/item";
 
 /** Injection token for the store port. */
-export const ITEM_REPOSITORY = Symbol('ItemRepository');
+export const ITEM_REPOSITORY = Symbol("ItemRepository");
 
 /**
  * The store port the service depends on. It speaks domain types, so the
