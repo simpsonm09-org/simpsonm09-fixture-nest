@@ -17,6 +17,7 @@ export class ItemRequestDto {
   name!: string;
 
   @ApiPropertyOptional({
+    type: String,
     description: "Item description",
     example: "A small widget",
     maxLength: 2000,
@@ -42,6 +43,7 @@ export class ItemResponseDto {
   name!: string;
 
   @ApiProperty({
+    type: String,
     description: "Item description",
     example: "A small widget",
     nullable: true,

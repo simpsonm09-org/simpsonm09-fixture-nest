@@ -14,19 +14,34 @@ import {
 import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
+  ApiExtraModels,
   ApiNoContentResponse,
-  ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
   ApiParam,
+  ApiResponse,
+  type ApiResponseOptions,
   ApiTags,
+  getSchemaPath,
 } from "@nestjs/swagger";
 import { ItemService } from "../service/item.service";
 import { ItemRequestDto, ItemResponseDto } from "./item.dto";
 import { toItem, toItemResponse } from "./item.mapper";
 import { ProblemDetailDto } from "./problem-detail.dto";
 
+/** 404 body, served as `application/problem+json` (see the exception filter). */
+const NOT_FOUND_RESPONSE: ApiResponseOptions = {
+  status: 404,
+  description: "Item not found",
+  content: {
+    "application/problem+json": {
+      schema: { $ref: getSchemaPath(ProblemDetailDto) },
+    },
+  },
+};
+
 /** Item CRUD endpoints. It speaks DTOs and never touches the store. */
+@ApiExtraModels(ProblemDetailDto)
 @ApiTags("Items")
 @Controller("items")
 export class ItemController {
@@ -46,10 +61,7 @@ export class ItemController {
     schema: { type: "integer", format: "int64", example: 1 },
   })
   @ApiOkResponse({ type: ItemResponseDto })
-  @ApiNotFoundResponse({
-    type: ProblemDetailDto,
-    description: "Item not found",
-  })
+  @ApiResponse(NOT_FOUND_RESPONSE)
   getItem(@Param("id", ParseIntPipe) id: number): ItemResponseDto {
     return toItemResponse(this.service.getItem(id));
   }
@@ -73,10 +85,7 @@ export class ItemController {
     schema: { type: "integer", format: "int64", example: 1 },
   })
   @ApiOkResponse({ type: ItemResponseDto })
-  @ApiNotFoundResponse({
-    type: ProblemDetailDto,
-    description: "Item not found",
-  })
+  @ApiResponse(NOT_FOUND_RESPONSE)
   @ApiBadRequestResponse({ description: "Validation failed" })
   updateItem(
     @Param("id", ParseIntPipe) id: number,
@@ -96,10 +105,7 @@ export class ItemController {
     schema: { type: "integer", format: "int64", example: 1 },
   })
   @ApiNoContentResponse({ description: "Item deleted" })
-  @ApiNotFoundResponse({
-    type: ProblemDetailDto,
-    description: "Item not found",
-  })
+  @ApiResponse(NOT_FOUND_RESPONSE)
   deleteItem(@Param("id", ParseIntPipe) id: number): void {
     this.service.deleteItem(id);
   }

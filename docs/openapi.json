@@ -88,7 +88,7 @@
           "404": {
             "description": "Item not found",
             "content": {
-              "application/json": {
+              "application/problem+json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetailDto"
                 }
@@ -142,7 +142,7 @@
           "404": {
             "description": "Item not found",
             "content": {
-              "application/json": {
+              "application/problem+json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetailDto"
                 }
@@ -176,7 +176,7 @@
           "404": {
             "description": "Item not found",
             "content": {
-              "application/json": {
+              "application/problem+json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetailDto"
                 }
@@ -201,33 +201,6 @@
   "servers": [],
   "components": {
     "schemas": {
-      "ItemResponseDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "description": "Server-assigned identifier",
-            "example": 1,
-            "format": "int64"
-          },
-          "name": {
-            "type": "string",
-            "description": "Item name",
-            "example": "Widget"
-          },
-          "description": {
-            "type": "object",
-            "description": "Item description",
-            "example": "A small widget",
-            "nullable": true
-          }
-        },
-        "required": [
-          "id",
-          "name",
-          "description"
-        ]
-      },
       "ProblemDetailDto": {
         "type": "object",
         "properties": {
@@ -259,6 +232,33 @@
           "detail"
         ]
       },
+      "ItemResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Server-assigned identifier",
+            "example": 1,
+            "format": "int64"
+          },
+          "name": {
+            "type": "string",
+            "description": "Item name",
+            "example": "Widget"
+          },
+          "description": {
+            "type": "string",
+            "description": "Item description",
+            "example": "A small widget",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description"
+        ]
+      },
       "ItemRequestDto": {
         "type": "object",
         "properties": {
@@ -269,7 +269,7 @@
             "maxLength": 200
           },
           "description": {
-            "type": "object",
+            "type": "string",
             "description": "Item description",
             "example": "A small widget",
             "maxLength": 2000,

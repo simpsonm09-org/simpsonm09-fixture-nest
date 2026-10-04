@@ -2,20 +2,26 @@ import "reflect-metadata";
 import type { INestApplication } from "@nestjs/common";
 import request from "supertest";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
-import type { InMemoryItemRepository } from "../src/item/store/in-memory-item.repository";
-import { ITEM_REPOSITORY } from "../src/item/store/item.repository";
+import {
+  ITEM_REPOSITORY,
+  type ItemRepository,
+} from "../src/item/store/item.repository";
 import { createTestApp } from "./helpers/app";
 
 describe("Items API", () => {
   let app: INestApplication;
-  let store: InMemoryItemRepository;
+  let store: ItemRepository;
 
   beforeAll(async () => {
     app = await createTestApp();
-    store = app.get<InMemoryItemRepository>(ITEM_REPOSITORY);
+    store = app.get<ItemRepository>(ITEM_REPOSITORY);
   });
 
-  beforeEach(() => store.clear());
+  beforeEach(() => {
+    for (const item of store.findAll()) {
+      if (item.id !== null) store.deleteById(item.id);
+    }
+  });
 
   afterAll(async () => {
     await app.close();
