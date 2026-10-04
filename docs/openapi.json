@@ -1,0 +1,285 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/items": {
+      "get": {
+        "operationId": "ItemController_listItems",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ItemResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "List every item",
+        "tags": [
+          "Items"
+        ]
+      },
+      "post": {
+        "operationId": "ItemController_createItem",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ItemRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ItemResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed"
+          }
+        },
+        "summary": "Create an item",
+        "tags": [
+          "Items"
+        ]
+      }
+    },
+    "/items/{id}": {
+      "get": {
+        "operationId": "ItemController_getItem",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ItemResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Item not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetailDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get one item by id",
+        "tags": [
+          "Items"
+        ]
+      },
+      "put": {
+        "operationId": "ItemController_updateItem",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "example": 1
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ItemRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ItemResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed"
+          },
+          "404": {
+            "description": "Item not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetailDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Replace an item",
+        "tags": [
+          "Items"
+        ]
+      },
+      "delete": {
+        "operationId": "ItemController_deleteItem",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Item deleted"
+          },
+          "404": {
+            "description": "Item not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetailDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Delete an item",
+        "tags": [
+          "Items"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Simpsonm09 Fixture Nest API",
+    "description": "Item CRUD service for the simpsonm09 repository fixture",
+    "version": "0.1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "schemas": {
+      "ItemResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Server-assigned identifier",
+            "example": 1,
+            "format": "int64"
+          },
+          "name": {
+            "type": "string",
+            "description": "Item name",
+            "example": "Widget"
+          },
+          "description": {
+            "type": "object",
+            "description": "Item description",
+            "example": "A small widget",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description"
+        ]
+      },
+      "ProblemDetailDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Problem type URI",
+            "example": "about:blank"
+          },
+          "title": {
+            "type": "string",
+            "description": "Short human-readable summary",
+            "example": "Item not found"
+          },
+          "status": {
+            "type": "integer",
+            "description": "HTTP status code",
+            "example": 404
+          },
+          "detail": {
+            "type": "string",
+            "description": "Explanation specific to this occurrence",
+            "example": "Item 9 was not found"
+          }
+        },
+        "required": [
+          "type",
+          "title",
+          "status",
+          "detail"
+        ]
+      },
+      "ItemRequestDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Item name",
+            "example": "Widget",
+            "maxLength": 200
+          },
+          "description": {
+            "type": "object",
+            "description": "Item description",
+            "example": "A small widget",
+            "maxLength": 2000,
+            "nullable": true
+          }
+        },
+        "required": [
+          "name"
+        ]
+      }
+    }
+  }
+}

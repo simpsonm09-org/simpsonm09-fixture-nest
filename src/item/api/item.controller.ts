@@ -1,0 +1,81 @@
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Inject,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+} from '@nestjs/common';
+import {
+  ApiBadRequestResponse,
+  ApiCreatedResponse,
+  ApiNoContentResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger';
+import { ItemService } from '../service/item.service';
+import { ItemRequestDto, ItemResponseDto } from './item.dto';
+import { toItem, toItemResponse } from './item.mapper';
+import { ProblemDetailDto } from './problem-detail.dto';
+
+/** Item CRUD endpoints. It speaks DTOs and never touches the store. */
+@ApiTags('Items')
+@Controller('items')
+export class ItemController {
+  constructor(@Inject(ItemService) private readonly service: ItemService) {}
+
+  @Get()
+  @ApiOperation({ summary: 'List every item' })
+  @ApiOkResponse({ type: ItemResponseDto, isArray: true })
+  listItems(): ItemResponseDto[] {
+    return this.service.listItems().map(toItemResponse);
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'Get one item by id' })
+  @ApiParam({ name: 'id', schema: { type: 'integer', format: 'int64', example: 1 } })
+  @ApiOkResponse({ type: ItemResponseDto })
+  @ApiNotFoundResponse({ type: ProblemDetailDto, description: 'Item not found' })
+  getItem(@Param('id', ParseIntPipe) id: number): ItemResponseDto {
+    return toItemResponse(this.service.getItem(id));
+  }
+
+  @Post()
+  @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({ summary: 'Create an item' })
+  @ApiCreatedResponse({ type: ItemResponseDto })
+  @ApiBadRequestResponse({ description: 'Validation failed' })
+  createItem(@Body() request: ItemRequestDto): ItemResponseDto {
+    const domain = toItem(request);
+    return toItemResponse(this.service.createItem(domain.name, domain.description));
+  }
+
+  @Put(':id')
+  @ApiOperation({ summary: 'Replace an item' })
+  @ApiParam({ name: 'id', schema: { type: 'integer', format: 'int64', example: 1 } })
+  @ApiOkResponse({ type: ItemResponseDto })
+  @ApiNotFoundResponse({ type: ProblemDetailDto, description: 'Item not found' })
+  @ApiBadRequestResponse({ description: 'Validation failed' })
+  updateItem(@Param('id', ParseIntPipe) id: number, @Body() request: ItemRequestDto): ItemResponseDto {
+    const domain = toItem(request);
+    return toItemResponse(this.service.updateItem(id, domain.name, domain.description));
+  }
+
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({ summary: 'Delete an item' })
+  @ApiParam({ name: 'id', schema: { type: 'integer', format: 'int64', example: 1 } })
+  @ApiNoContentResponse({ description: 'Item deleted' })
+  @ApiNotFoundResponse({ type: ProblemDetailDto, description: 'Item not found' })
+  deleteItem(@Param('id', ParseIntPipe) id: number): void {
+    this.service.deleteItem(id);
+  }
+}
