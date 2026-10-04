@@ -12,6 +12,14 @@
     "rules": {
       "style": {
         "useImportType": "off"
+      },
+      "complexity": {
+        "noExcessiveCognitiveComplexity": {
+          "level": "error",
+          "options": {
+            "maxAllowedComplexity": 15
+          }
+        }
       }
     }
   }
