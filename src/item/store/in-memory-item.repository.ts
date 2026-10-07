@@ -46,7 +46,7 @@ export class InMemoryItemRepository implements ItemRepository {
     return this.items.has(id);
   }
 
-  /** Replaces every record with the given seeds. Used by the dev seed and tests. */
+  /** Converges the store to the given seeds, discarding every existing item. */
   seed(seeds: ReadonlyArray<Pick<Item, "name" | "description">>): void {
     this.items.clear();
     this.nextId = 1;
