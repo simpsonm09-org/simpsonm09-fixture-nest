@@ -6,6 +6,7 @@
 import { spawnSync } from 'node:child_process';
 
 const result = spawnSync('npx', ['--no-install', 'vitest', 'run', 'tests/openapi.spec.ts'], {
+  windowsHide: true,
   stdio: 'inherit',
   shell: process.platform === 'win32',
   env: { ...process.env, WRITE_OPENAPI: '1' },
