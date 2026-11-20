@@ -1,4 +1,4 @@
-# simpsonm09-fixture-nest working agreements
+# fixture-nest working agreements
 
 A layered NestJS item CRUD service. It is the TypeScript fixture for the fleet standard.
 

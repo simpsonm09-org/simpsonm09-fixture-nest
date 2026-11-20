@@ -1,6 +1,6 @@
 # Documentation
 
-Index for the `simpsonm09-fixture-nest` service, a layered NestJS item CRUD API.
+Index for the `fixture-nest` service, a layered NestJS item CRUD API.
 
 ## Guides
 

@@ -1,5 +1,5 @@
 {
-  "name": "simpsonm09-fixture-nest",
+  "name": "fixture-nest",
   "version": "0.1.0",
   "private": true,
   "description": "A NestJS item CRUD service, the TypeScript fixture for the simpsonm09 fleet standard.",
